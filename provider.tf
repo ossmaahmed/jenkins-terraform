@@ -9,6 +9,6 @@ provider "aws" {
 
   endpoints {
     
-    ec2 = "http://floci:4566"
+    ec2 = "http://host.docker.internal:4566"
   }
 }
