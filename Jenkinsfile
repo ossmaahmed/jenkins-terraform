@@ -23,31 +23,31 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                bat 'terraform init -input=false'
+                sh 'terraform init -input=false'
             }
         }
 
         stage('Select Terraform Workspace') {
             steps {
-                bat "terraform workspace select ${params.env}"
+                sh "terraform workspace select '${params.env}'"
             }
         }
 
         stage('Terraform Format') {
             steps {
-                bat 'terraform fmt -check -recursive'
+                sh 'terraform fmt -check -recursive'
             }
         }
 
         stage('Terraform Validate') {
             steps {
-                bat 'terraform validate'
+                sh 'terraform validate'
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                bat "terraform plan -input=false -var-file=${params.env}.tfvars -out=tfplan"
+                sh "terraform plan -input=false -var-file='${params.env}.tfvars' -out=tfplan"
             }
         }
 
@@ -62,7 +62,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                bat 'terraform apply -input=false tfplan'
+                sh 'terraform apply -input=false tfplan'
             }
         }
     }
@@ -70,7 +70,7 @@ pipeline {
     post {
         always {
             echo 'Pipeline finished (success, failure, or aborted).'
-            bat 'if exist tfplan del /q tfplan'
+            sh 'rm -f tfplan'
         }
 
         success {
