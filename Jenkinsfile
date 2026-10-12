@@ -20,6 +20,11 @@ pipeline {
                 sh 'terraform init -input=false'
             }
         }
+         stage('intial Terraform Workspace') {
+            steps {
+                sh "terraform workspace new '${params.env}'"
+            }
+        }
 
         stage('Select Terraform Workspace') {
             steps {
