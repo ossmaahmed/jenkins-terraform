@@ -20,15 +20,12 @@ pipeline {
                 sh 'terraform init -input=false'
             }
         }
-         stage('intial Terraform Workspace') {
+        stage('Create or Select Terraform Workspace') {
             steps {
-                sh "terraform workspace new '${params.env}'"
-            }
-        }
-
-        stage('Select Terraform Workspace') {
-            steps {
-                sh "terraform workspace select '${params.env}'"
+                sh """
+                terraform workspace list | grep -qw '${params.env}' || terraform workspace new '${params.env}'
+                terraform workspace select '${params.env}'
+                """
             }
         }
 
@@ -86,7 +83,7 @@ Build: #${env.BUILD_NUMBER}
 الرابط: ${env.BUILD_URL}
 
 آخر 150 سطر من سجل البناء:
-\${BUILD_LOG, maxLines=150, escapeHtml=false}
+\${BUILD_LOG, maxLines=10, escapeHtml=false}
 """
             )
         }
