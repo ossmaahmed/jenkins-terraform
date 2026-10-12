@@ -29,10 +29,10 @@ pipeline {
 
         stage('Select Terraform Workspace') {
             steps {
-                sh """
+                sh ...
                 terraform workspace new '${params.env}' ||
                 terraform workspace select '${params.env}' 
-                """
+                ...
             }
         }
 
