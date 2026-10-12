@@ -1,8 +1,8 @@
 variable "cidr" {
-    type = string
-  
+  type = string
+
 }
 variable "tags" {
-    type = string
-  
+  type = string
+
 }

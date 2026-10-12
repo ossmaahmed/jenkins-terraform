@@ -15,12 +15,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Terraform Init') {
             steps {
                 sh 'terraform init -input=false'
@@ -29,14 +23,9 @@ pipeline {
 
         stage('Select Terraform Workspace') {
             steps {
-                sh '''
-                terraform workspace new '${params.env}' ||
-                terraform workspace select '${params.env}' 
-                '''
+                sh "terraform workspace select '${params.env}'"
             }
         }
-
-       
 
         stage('Terraform Plan') {
             steps {
